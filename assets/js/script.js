@@ -246,15 +246,19 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function(event) {
+    $(this).addClass("dropover");
     console.log("activiate", this);
   },
   deactivate: function(event) {
+    $(this).removeClass("dropover");
     console.log("deactivate", this);
   },
   over: function(event) {
+    $(EventTarget).addClass("dropover-active");
     console.log("over", event.target);
   },
   out: function(event) {
+    $(EventTarget).removeClass("dropover-active");
     console.log("out", event.target);
   },
   update: function(event) {
@@ -322,3 +326,12 @@ $("#modalDueDate").datepicker({
 loadTasks();
 
 
+
+// Set an interval to automatically reload page data to check if duedates have changed
+setInterval(function() {
+  $(".card .list-group-item").each(function(index,el) {
+    auditTask(el);
+  })
+}, (1000 * 60) *30);
+
+console.log(taskEl);
