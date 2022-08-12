@@ -245,22 +245,20 @@ $(".card .list-group").sortable({
   scroll: false,
   tolerance: "pointer",
   helper: "clone",
-  activate: function(event) {
+  activate: function(event, ui) {
     $(this).addClass("dropover");
-    console.log("activiate", this);
-    $(".bottom-trash").addClass(".bottom-trash-drag");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
-  deactivate: function(event) {
+  deactivate: function(event, ui) {
     $(this).removeClass("dropover");
     console.log("deactivate", this);
-    $(".bottom-trash").remove(".bottom-trash-drag");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function(event) {
-    $(EventTarget).addClass("dropover-active");
-    console.log("over", event.target);
+    $(event.target).addClass("dropover-active");
   },
   out: function(event) {
-    $(EventTarget).removeClass("dropover-active");
+    $(event.target).removeClass("dropover-active");
     console.log("out", event.target);
   },
   update: function(event) {
@@ -303,24 +301,25 @@ var tempArr = [];
  
 });
 
-// Drag and drop to delete/trash tasks
+// trash icon can be dropped onto
 $("#trash").droppable({
   accept: ".card .list-group-item",
-  tolerance: "touch", 
+  tolerance: "touch",
   drop: function(event, ui) {
+    // remove dragged element from the dom
     ui.draggable.remove();
-    console.log("drop");
-    $(".bottom-trash").remove(".bottom-trash-active");
+    $(".bottom-trash").removeClass("bottom-trash-active");
   },
   over: function(event, ui) {
-    console.log("over");
-    $(".bottom-trash").addClass(".bottom-trash-active");
+    console.log(ui);
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function(event, ui) {
-    console.log("out");
-    $(".bottom-trash").remove(".bottom-trash-active");
+    $(".bottom-trash").removeClass("bottom-trash-active");
   }
 });
+
+//convert text field into jquery date picker
 
 $("#modalDueDate").datepicker({
   minDate: 1
